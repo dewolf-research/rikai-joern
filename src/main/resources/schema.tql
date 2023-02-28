@@ -1,0 +1,28 @@
+define
+
+Call sub entity,
+    owns Label,
+    owns Line,
+    plays Parameter:Source,
+    plays Parameter:Sink;
+
+Literal sub entity,
+    owns StringValue,
+    plays Parameter:Source;
+
+Parameter sub relation,
+    owns Index,
+    relates Source,
+    relates Sink;
+
+Index sub attribute,
+    value long;
+
+Line sub attribute,
+    value long;
+
+Label sub attribute,
+    value string;
+
+StringValue sub attribute,
+    value string;

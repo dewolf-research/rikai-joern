@@ -12,7 +12,7 @@ libraryDependencies ++= Seq(
   "com.github.scopt" %% "scopt" % "3.7.1",
   "org.apache.logging.log4j" % "log4j-slf4j-impl" % "2.17.1" % Runtime,
   "com.typesafe" % "config" % "1.3.3",                // config file parsing
-  "com.rethinkdb" % "rethinkdb-driver" % "2.4.4",     // database connection
+  "com.vaticle.typedb" % "typedb-client" % "2.8.0",
   "io.joern" %% "x2cpg" % Versions.joern,
   "io.joern" %% "c2cpg" % Versions.joern,
   "io.joern" %% "joern-cli" % Versions.joern,
@@ -36,7 +36,9 @@ Global/onChangedBuildSource := ReloadOnSourceChanges
 
 ThisBuild/resolvers ++= Seq(
   Resolver.mavenLocal,
-  "Sonatype OSS" at "https://oss.sonatype.org/content/repositories/public")
+  "Sonatype OSS" at "https://oss.sonatype.org/content/repositories/public",
+  "repo.vaticle.com" at "https://repo.vaticle.com/repository/maven/"
+)
 
 Compile / doc / sources := Seq.empty
 Compile / packageDoc / publishArtifact := false
