@@ -25,7 +25,8 @@ object Main extends App {
   val db_config = config.getConfig("database")
 
   println("Connecting to DB ...")
-  val db: DatabaseManager = new DatabaseManager(db_config.getString("hostname"), db_config.getInt("port"))
+  val hostname = sys.env.getOrElse("RIKAI_DBHOST", db_config.getString("hostname"))
+  val db: DatabaseManager = new DatabaseManager(hostname, db_config.getInt("port"))
 
   println("Creating CPG...")
   val joern_config = JoernConfig(inputPaths = Set(args(1)))
