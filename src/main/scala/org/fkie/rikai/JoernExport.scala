@@ -87,14 +87,16 @@ trait JoernExport {
   private def add_source_literal(transaction: TypeDBTransaction, call: Call, argument: Expression, head: Expression) = {
     val relation = TypeQL
       .`match`(
-        TypeQL.`var`("value").isa("Literal").has("StringValue", head.code),
+        parseInt(head.code) match {
+          case Some(n) => TypeQL.`var`("value").isa("IntegerLiteral").has("IntegerValue", n)
+          case None => TypeQL.`var`("value").isa("StringLiteral").has("StringValue", head.code)},
         TypeQL.`var`("call").isa("Call").has("Line", call.lineNumber.get.toLong).has("Label", call.name)
       )
       .insert(
         TypeQL
-          .`var`(s"param")
+          .`var`("param")
           .rel("Source", "value")
-          .rel("Sink", s"call")
+          .rel("Sink", "call")
           .isa("Parameter")
           .has("Index", argument.argumentIndex)
       )
@@ -107,12 +109,15 @@ trait JoernExport {
     println("Creating call nodes...")
     for (call <- cpg.call.filter(is_api_call)) {
       val query =
-        TypeQL.insert(TypeQL.`var`(s"call").isa("Call").has("Line", call.lineNumber.get.toLong).has("Label", call.name))
+        TypeQL.insert(TypeQL.`var`("call").isa("Call").has("Line", call.lineNumber.get.toLong).has("Label", call.name))
       transaction.query().insert(query)
     }
     println("Creating literal nodes...")
     for (literal <- cpg.literal) {
-      val query = TypeQL.insert(TypeQL.`var`(s"literal").isa("Literal").has("StringValue", literal.code))
+      val query = parseInt(literal.code) match {
+        case Some(n) => TypeQL.insert(TypeQL.`var`("literal").isa("IntegerLiteral").has("IntegerValue", n))
+        case None => TypeQL.insert(TypeQL.`var`("literal").isa("StringLiteral").has("StringValue", literal.code))
+      }
       transaction.query().insert(query)
     }
     transaction.commit()
@@ -128,5 +133,13 @@ trait JoernExport {
     if (call.name.startsWith("<operator>"))
       return false
     true
+  }
+
+  def parseInt(s: String): Option[Long] = {
+    try {
+      Some(java.lang.Long.decode(s))
+    } catch {
+      case e: NumberFormatException => None
+    }
   }
 }

@@ -7,8 +7,13 @@ Call sub entity,
     plays Parameter:Sink;
 
 Literal sub entity,
-    owns StringValue,
     plays Parameter:Source;
+
+StringLiteral sub Literal,
+    owns StringValue;
+
+IntegerLiteral sub Literal,
+    owns IntegerValue;
 
 Parameter sub relation,
     owns Index,
@@ -26,3 +31,6 @@ Label sub attribute,
 
 StringValue sub attribute,
     value string;
+
+IntegerValue sub attribute,
+    value long;
