@@ -12,7 +12,7 @@ libraryDependencies ++= Seq(
   "com.github.scopt" %% "scopt" % "3.7.1",
   "org.apache.logging.log4j" % "log4j-slf4j-impl" % "2.17.1" % Runtime,
   "com.typesafe" % "config" % "1.3.3",                // config file parsing
-  "com.vaticle.typedb" % "typedb-client" % "2.8.0",
+  "com.vaticle.typedb" % "typedb-client" % "2.8.0" exclude("ch.qos.logback", "*"),
   "io.joern" %% "x2cpg" % Versions.joern,
   "io.joern" %% "c2cpg" % Versions.joern,
   "io.joern" %% "joern-cli" % Versions.joern,
@@ -20,7 +20,6 @@ libraryDependencies ++= Seq(
   "io.joern" %% "semanticcpg" % Versions.joern % Test classifier "tests",
   "org.scalatest" %% "scalatest" % "3.1.1" % Test
 )
-
 
 ThisBuild/Compile/scalacOptions ++= Seq(
   "-feature",
