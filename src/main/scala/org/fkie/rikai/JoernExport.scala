@@ -89,7 +89,7 @@ trait JoernExport {
       .`match`(
         parseInt(head.code) match {
           case Some(n) => TypeQL.`var`("value").isa("IntegerLiteral").has("IntegerValue", n)
-          case None => TypeQL.`var`("value").isa("StringLiteral").has("StringValue", head.code)},
+          case None => TypeQL.`var`("value").isa("StringLiteral").has("StringValue", get_string_value(head))},
         TypeQL.`var`("call").isa("Call").has("Line", call.lineNumber.get.toLong).has("Label", call.name)
       )
       .insert(
@@ -116,7 +116,7 @@ trait JoernExport {
     for (literal <- cpg.literal) {
       val query = parseInt(literal.code) match {
         case Some(n) => TypeQL.insert(TypeQL.`var`("literal").isa("IntegerLiteral").has("IntegerValue", n))
-        case None => TypeQL.insert(TypeQL.`var`("literal").isa("StringLiteral").has("StringValue", literal.code))
+        case None => TypeQL.insert(TypeQL.`var`("literal").isa("StringLiteral").has("StringValue", get_string_value(literal)))
       }
       transaction.query().insert(query)
     }
@@ -135,11 +135,20 @@ trait JoernExport {
     true
   }
 
+  // Try to parse the given string as an integer
   def parseInt(s: String): Option[Long] = {
     try {
       Some(java.lang.Long.decode(s))
     } catch {
       case e: NumberFormatException => None
     }
+  }
+
+  // Return the string valur of a string literal, possibly stripping prefixes
+  def get_string_value(expr: Expression): String = {
+    if (expr.code.startsWith("L\"")) {
+      return expr.code.stripPrefix("L\"").stripSuffix("\"")
+    }
+    expr.code.stripPrefix("\"").stripSuffix("\"")
   }
 }
