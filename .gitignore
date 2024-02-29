@@ -6,3 +6,6 @@ target/
 /workspace
 ./rikai
 joern
+.vscode
+.metals
+.bloop

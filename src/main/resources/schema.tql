@@ -4,7 +4,15 @@ Call sub entity,
     owns Label,
     owns Line,
     plays Parameter:Source,
+    plays Parameter:Sink,
+    plays Controls:Controlled;
+
+Condition sub entity,
+    owns Line,
+    plays Controls:Controller,
     plays Parameter:Sink;
+
+Loop sub Condition;
 
 Literal sub entity,
     plays Parameter:Source;
@@ -19,6 +27,10 @@ Parameter sub relation,
     owns Index,
     relates Source,
     relates Sink;
+
+Controls sub relation,
+    relates Controlled,
+    relates Controller;
 
 Index sub attribute,
     value long;
