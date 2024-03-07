@@ -3,7 +3,6 @@ ThisBuild / organization := "org.fkie"
 ThisBuild / scalaVersion := "3.3.1"
 ThisBuild / version := "0.3.2"
 
-// parsed by project/Versions.scala, updated by updateDependencies.sh
 val cpgVersion = "1.6.2"
 val joernVersion = "2.0.252"
 val overflowdbVersion = "1.184"
@@ -14,7 +13,7 @@ libraryDependencies ++= Seq(
   //"org.apache.logging.log4j" % "log4j-slf4j-impl" % "2.23.0" % Runtime,
   "ch.qos.logback" % "logback-classic" % "1.5.0",
   "com.typesafe" % "config" % "1.3.3",                // config file parsing
-  "com.vaticle.typedb" % "typedb-client" % "2.8.0" exclude("ch.qos.logback", "*"),
+  "com.vaticle.typedb" % "typedb-driver" % "2.26.5" exclude("ch.qos.logback", "*"),
   "io.joern" %% "x2cpg" % Versions.joern,
   "io.joern" %% "c2cpg" % Versions.joern,
   "io.joern" %% "joern-cli" % Versions.joern,

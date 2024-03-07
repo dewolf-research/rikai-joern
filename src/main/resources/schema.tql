@@ -29,8 +29,8 @@ Parameter sub relation,
     relates Sink;
 
 Controls sub relation,
-    relates Controlled,
-    relates Controller;
+    relates Controller,
+    relates Controlled;
 
 Index sub attribute,
     value long;
